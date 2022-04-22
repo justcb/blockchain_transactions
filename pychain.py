@@ -77,7 +77,7 @@ class Block:
     # Rename the `data` attribute to `record`, and set the data type to `Record`
     record: Record
 
-    creator_id: int
+    # creator_id: int
     prev_hash: str = "0"
     timestamp: str = datetime.datetime.utcnow().strftime("%H:%M:%S")
     nonce: int = 0
@@ -88,8 +88,8 @@ class Block:
         record = str(self.record).encode()
         sha.update(record)
 
-        creator_id = str(self.creator_id).encode()
-        sha.update(creator_id)
+    #    creator_id = str(self.creator_id).encode()
+    #    sha.update(creator_id)
 
         timestamp = str(self.timestamp).encode()
         sha.update(timestamp)
@@ -177,15 +177,15 @@ pychain = setup()
 
 # @TODO:
 # Add an input area where you can get a value for `sender` from the user.
-input_data = st.text_input("Sender")
+sender = st.text_input("Sender")
 
 # @TODO:
 # Add an input area where you can get a value for `receiver` from the user.
-input_data = st.text_input("Receiver")
+receiver = st.text_input("Receiver")
 
 # @TODO:
 # Add an input area where you can get a value for `amount` from the user.
-input_data = st.number_input("Amount")
+amount = st.number_input("Amount")
 
 if st.button("Add Block"):
     prev_block = pychain.chain[-1]
@@ -196,14 +196,9 @@ if st.button("Add Block"):
     # which is set equal to a `Record` that contains the `sender`, `receiver`,
     # and `amount` values
     new_block = Block(
-        data=input_data,
-        creator_id=42,
-        prev_hash=prev_block_hash,
-        record=Record,
-        sender=Sender,
-        receiver=Receiver,
-        amount=Amount
-    
+        record=Record(sender, receiver, amount),    
+        prev_hash=prev_block_hash
+
     )
 
     pychain.add_block(new_block)
